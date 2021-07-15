@@ -83,6 +83,7 @@ const registerEventListeners = (root) => {
         const courseId = wrapper.data('courseid');
         const categoryId = wrapper.data('categoryid');
         const link = e.currentTarget;
+
         if (view === 'month') {
             changeMonth(root, link.href, link.dataset.year, link.dataset.month, courseId, categoryId, link.dataset.day);
             e.preventDefault();
