@@ -76,6 +76,30 @@ class behat_calendar extends behat_base {
             $this->execute("behat_forms::press_button", get_string('save'));
         }
     }
+    
+    /**
+     * Click a specific day in the calendar.
+     *
+     * @Given /^I click day "(?P<dayofmonth>\d+)" of this month in the calendar$/
+     * @param int $day The day of the current month
+     */
+    public function i_click_day_of_this_month_in_calendar($day) {
+        $summarytitle = userdate(time(), get_string('strftimemonthyear'));
+        // The current month table.
+        $currentmonth = "table[descendant::*[self::caption[contains(concat(' ', normalize-space(.), ' '), ' {$summarytitle} ')]]]";
+
+        // Strings for the class cell match.
+        $cellclasses  = "contains(concat(' ', normalize-space(@class), ' '), ' day ')";
+        $daycontains  = "text()[contains(concat(' ', normalize-space(.), ' '), ' {$day} ')]";
+        $daycell      = "td[{$cellclasses}]";
+        $dayofmonth   = "a[{$daycontains}]";
+
+        $xpath = '//' . $currentmonth . '/descendant::' . $daycell . '/' . $dayofmonth;
+        $this->execute("behat_general::wait_until_the_page_is_ready");
+        $this->execute("behat_general::i_click_on", array($xpath, "xpath_element"));
+        $this->execute("behat_general::wait_until_the_page_is_ready");
+
+    }
 
     /**
      * Hover over a specific day in the calendar.
